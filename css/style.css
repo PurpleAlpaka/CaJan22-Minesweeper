@@ -60,7 +60,6 @@ body {
     margin: auto;
     min-height: 45rem;
     min-width: 45rem;
-    table-layout: fixed;
 }
 
 .cell {
@@ -69,14 +68,16 @@ body {
     text-align: center;
     background-color: #058e95d7;
     font-weight: 700;
-    font-size: 2.5rem;
     padding: 0;
     transition: background-color 0.9s;
-    line-height: 0;
 }
 
 .hidden:hover {
     background-color: #086c72d7;
+}
+
+.cell.easy {
+    font-size: 1.25rem;
 }
 
 .hidden {

@@ -1,14 +1,13 @@
 'use strict'
 
 const MINE_IMG = 'M'
-const LEVELS = [{ id: 'easy', size: 4, mines: 1 }, { id: 'medium', size: 8, mines: 12 }, { id: 'hard', size: 12, mines: 30 }]
+const LEVELS = [{ id: 'easy', size: 4, mines: 2 }, { id: 'medium', size: 8, mines: 12 }, { id: 'hard', size: 12, mines: 30 }]
 var gBoard
 var gGame = {
     isOn: false,
     isFirstClick: null,
     currLvl: LEVELS[0],
     prevCheckedBox: null,
-    minePositions: [],
     intervals: [], // [0] = timerInterval
     shownCount: 0,
     markedCount: 0,
@@ -24,9 +23,10 @@ function initGame() {
     gGame.markedCount = 0
     gGame.secsPassed = 0
     gGame.shownTarget = (gGame.currLvl.size ** 2) - gGame.currLvl.mines
+    gGame.shownCount = 0
     gGame.prevCheckedBox = document.getElementById(gGame.currLvl.id)
     gGame.prevCheckedBox.checked = true
-    gGame.remainingLives = 3
+    gGame.remainingLives = 80
     clearIntervals(gGame.intervals)
     gGame.intervals = []
     gBoard = buildBoard(gGame.currLvl.size)
@@ -38,12 +38,8 @@ function initGame() {
 function checkWin() {
     console.log('gGame.shownTarget', gGame.shownTarget)
     console.log('gGame.shownCount', gGame.shownCount)
-    if (gGame.shownCount !== gGame.shownTarget) return false
-    for (var i = 0; i < gGame.minePositions.length; i++) {
-        const currPos = gGame.minePositions[i]
-        console.log('currPos', currPos)
-        if (!gBoard[currPos.i][currPos.j].isMarked) return false
-    }
+    if (gGame.shownCount !== gGame.shownTarget || gGame.currLvl.mines !== gGame.markedCount) return false
+
     gameOver(true)
 }
 
@@ -86,8 +82,6 @@ function changeLvl(lvlIdx) {
 }
 
 function removeLife() {
-    console.log('gGame.remainingLives', gGame.remainingLives)
-
-    document.querySelector(`.life-${gGame.remainingLives}`).backgroundImage = ('url(../assets/deadHeart.png)')
+    // document.querySelector(`.life-${gGame.remainingLives}`).backgroundImage = ('url(../assets/deadHeart.png)')
     return --gGame.remainingLives
 }

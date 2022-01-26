@@ -98,7 +98,9 @@ function cellMarked(ev) {
     }
     gBoard[pos.i][pos.j].isMarked = !gBoard[pos.i][pos.j].isMarked
     gGame.markedCount++
-        ev.target.classList.toggle('marked')
+        console.log('gGame.markedCount', gGame.markedCount)
+
+    ev.target.classList.toggle('marked')
     checkWin()
 }
 
