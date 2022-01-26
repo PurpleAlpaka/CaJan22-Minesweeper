@@ -1,0 +1,59 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    background-image: url('/assets/background1.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.upper {
+    position: relative;
+    height: 20rem;
+}
+
+.lvl-select {
+    position: absolute;
+    top: 150px;
+    width: 10ch;
+}
+
+.lvl-select span {
+    display: inline-block;
+}
+
+.board-container {
+    margin: auto;
+    min-height: 40rem;
+    min-width: 40rem;
+}
+
+.cell {
+    width: 5%;
+    height: 5%;
+    text-align: center;
+    background-color: gray;
+}
+
+.hidden {
+    border: 0.5rem outset gray;
+    background-color: gray;
+}
+
+.shown {
+    border: 5px inset gray;
+}
+
+.marked {
+    background: no-repeat center center / 25% url('../assets/flag.png'), gray;
+}
+
+.mine {
+    background: no-repeat center / 50% url('../assets/mine.png'), red;
+}
