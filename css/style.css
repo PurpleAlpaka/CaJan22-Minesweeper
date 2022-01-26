@@ -35,9 +35,9 @@ body {
     font-size: 2rem;
 }
 
-.lvl-select {
+.lvl-select span {
     display: inline-block;
-    width: 13ch
+    width: 15ch
 }
 
 .radios {
@@ -69,6 +69,11 @@ body {
     background-color: #058e95d7;
     font-weight: 700;
     padding: 0;
+    transition: background-color 0.9s;
+}
+
+.hidden:hover {
+    background-color: #086c72d7;
 }
 
 .cell.easy {
@@ -78,6 +83,11 @@ body {
 .hidden {
     border: 0.5rem outset #95a08f;
     background-color: #058e95d7;
+    cursor: pointer;
+}
+
+input {
+    cursor: pointer;
 }
 
 .shown {
@@ -90,4 +100,49 @@ body {
 
 .mine {
     background: no-repeat center / 50% url('../assets/mine.png'), red;
+}
+
+.modal {
+    position: absolute;
+    height: 50%;
+    width: 50%;
+    text-align: center;
+    background-color: rgb(4 81 104 / 91%);
+    border-radius: 10px;
+    top: 23%;
+    left: 23%;
+    transition: all 1s;
+    line-height: 10rem;
+}
+
+.game-over,
+.win-text-display {
+    display: block;
+    font-weight: 600;
+    font-size: 3em;
+}
+
+.time-display {
+    font-size: 2rem;
+    width: 10ch;
+    text-align: center;
+}
+
+.final-time {
+    position: relative;
+    left: 5%;
+    width: 24ch;
+    line-height: 4rem;
+    font-size: 2rem;
+}
+
+.lives span {
+    display: inline-block;
+    height: 5rem;
+    width: 5rem;
+    background-image: url(../assets/heart.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background: no-repeat center / center url(../assets/heart.png)
 }

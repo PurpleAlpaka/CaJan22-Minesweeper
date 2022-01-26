@@ -23,7 +23,8 @@ function countTime() {
             const seconds = ((gGame.secsPassed % 60) < 10) ? '0' + gGame.secsPassed % 60 : gGame.secsPassed % 60
             display = parseInt(gGame.secsPassed / 60) + ' : ' + seconds
         } else display = gGame.secsPassed
-            // document.querySelector('.timer-display span').innerText = display
+    document.querySelector('.time').innerText = display
+    document.querySelector('.final-time span').innerText = display
 }
 
 function getPos(elCell) {

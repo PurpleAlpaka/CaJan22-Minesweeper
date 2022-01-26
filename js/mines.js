@@ -1,6 +1,9 @@
 'use strict'
 
 function addRandMines(minesCount, clickPos) {
+    // For tests
+    // gBoard[0][0].isMine = true
+    // gGame.minePositions.push({ i: 0, j: 0 })
     if (minesCount <= 0) return
     const randPos = {
         i: getRandomInt(0, gBoard.length),
@@ -11,6 +14,7 @@ function addRandMines(minesCount, clickPos) {
     else if (gBoard) {
         gBoard[randPos.i][randPos.j].isMine = true
         addRandMines(--minesCount, clickPos)
+        gGame.minePositions.push(randPos)
     }
 }
 
@@ -34,4 +38,12 @@ function countMinesAround(board, pos) {
         }
     }
     return count
+}
+
+function showAllMines(board) {
+    for (var i = 0; i < board.length; i++) {
+        for (var j = 0; j < board[0].length; j++) {
+            if (board[i][j].isMine) showCell(document.querySelector(getData({ i, j })), { i, j })
+        }
+    }
 }

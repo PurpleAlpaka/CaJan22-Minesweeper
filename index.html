@@ -16,6 +16,15 @@
         <div class="title">
             <h1>Minesweeper</h1>
         </div>
+        <div class="time-display">
+            Game Time: <span class="time"></span>
+        </div>
+        <!-- TODO: Make lives better -->
+        <div class="lives">
+            <span class="life-1"></span>
+            <span class="life-2"></span>
+            <span class="life-3"></span>
+        </div>
         <div class="lvl-select">
             <span>Choose a level: </span>
             <div class="radios">
@@ -36,6 +45,14 @@
 
         </tbody>
     </table>
+    <div class="modal">
+        <span class="game-over">Game Over...</span>
+        <span class="win-text-display">You <span class="win-text"></span></span>
+        <div class="final-time">
+            Your Final Game Time is: <span></span>
+        </div>
+        <button class="restart" onclick="initGame()">Play Again</button>
+    </div>
     <script src="js/util.js"></script>
     <script src="js/board.js"></script>
     <script src="js/mines.js"></script>
