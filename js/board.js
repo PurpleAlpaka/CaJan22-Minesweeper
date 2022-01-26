@@ -16,34 +16,6 @@ function buildBoard(size) {
     return board
 }
 
-function setRandomMines(minesCount) {
-    for (var i = 0; i < minesCount; i++) {
-        gBoard[getRandomInt(0, gBoard.length - 1)][getRandomInt(0, gBoard[0].length - 1)].isMine = true
-    }
-}
-
-function setMinesNegsCount(board) {
-    for (var i = 0; i < board.length; i++) {
-        for (var j = 0; j < board.length; j++) {
-            if (board[i][j].isMine) continue
-            board[i][j].minesAroundCount = countMinesAround(board, { i, j })
-        }
-    }
-}
-
-function countMinesAround(board, pos) {
-    var count = 0
-    for (var i = pos.i - 1; i <= pos.i + 1; i++) {
-        if (i < 0 || i > board.length - 1) continue
-        for (var j = pos.j - 1; j <= pos.j + 1; j++) {
-            if (j < 0 || j > board.length - 1 ||
-                (i === pos.i && j === pos.j)) continue
-            if (board[i][j].isMine) count++
-        }
-    }
-    return count
-}
-
 function renderBoard(board) {
     var strHTMl = ``
     for (var i = 0; i < board.length; i++) {
@@ -60,24 +32,30 @@ function renderBoard(board) {
 
 function cellClicked(elCell) {
     const pos = getPos(elCell)
+
     if (!gGame.isOn || gBoard[pos.i][pos.j].isShown || gBoard[pos.i][pos.j].isMarked) return
     if (gGame.isFirstClick) {
         gGame.isFirstClick = false
+        console.log('gGame.isFirstClick', gGame.isFirstClick)
+
         gGame.intervals[0] = setInterval(countTime, 1000)
-    }
-
-    gBoard[pos.i][pos.j].isShown = true
-
-    if (gBoard[pos.i][pos.j].isMine) {
+        addRandMines(gGame.currLvl.mines, pos)
+        setMinesNegsCount(gBoard)
+    } else if (gBoard[pos.i][pos.j].isMine) {
         elCell.classList.add('mine')
-        gameOver(false)
+        return gameOver(false)
     }
+    gBoard[pos.i][pos.j].isShown = true
+    showCell(elCell, pos)
+    if (!gBoard[pos.i][pos.j].minesAroundCount) expandNegs(gBoard, pos)
+    gGame.shownCount++
+        if (checkWin()) gameOver(true)
+}
 
+function showCell(elCell, pos) {
     elCell.classList.remove('hidden')
     elCell.classList.add('shown')
     elCell.innerText = (gBoard[pos.i][pos.j].minesAroundCount) ? gBoard[pos.i][pos.j].minesAroundCount : ''
-    gGame.shownCount++
-        if (checkWin()) gameOver(true)
 }
 
 function cellMarked(ev) {
@@ -92,4 +70,19 @@ function cellMarked(ev) {
     gGame.markedCount++
         ev.target.classList.toggle('marked')
     if (checkWin()) gameOver(true)
+}
+
+function expandNegs(board, pos) {
+    for (var i = pos.i - 1; i <= pos.i + 1; i++) {
+        if (i < 0 || i > board.length - 1) continue
+        for (var j = pos.j - 1; j <= pos.j + 1; j++) {
+            if (j < 0 || j > board.length - 1 ||
+                (i === pos.i && j === pos.j) || board[i][j].isShown) continue
+            const elCurrCell = document.querySelector(getData({ i, j }))
+            gBoard[pos.i][pos.j].isShown = true
+            showCell(elCurrCell, { i, j })
+            if (board[i][j].minesAroundCount) continue
+            expandNegs(board, { i, j })
+        }
+    }
 }

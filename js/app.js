@@ -1,10 +1,11 @@
 'use strict'
 
 const MINE_IMG = 'M'
-const LEVELS = [{ id: 'easy', size: 4, mines: 2 }, { id: 'medium', size: 8, mines: 12 }, { id: 'hard', size: 12, mines: 30 }]
+const LEVELS = [{ id: 'easy', size: 4, mines: 4 }, { id: 'medium', size: 8, mines: 12 }, { id: 'hard', size: 12, mines: 30 }]
 var gBoard
 var gGame = {
     isOn: false,
+    isFirstClick: null,
     currLvl: LEVELS[0],
     prevCheckedBox: null,
     minePositions: [{ i: 0, j: 0 }, { i: 1, j: 0 }],
@@ -17,6 +18,7 @@ var gGame = {
 
 function initGame() {
     gGame.isOn = true
+    gGame.isFirstClick = true
     gGame.shownCount = 0
     gGame.markedCount = 0
     gGame.secsPassed = 0
@@ -26,9 +28,6 @@ function initGame() {
     clearIntervals(gGame.intervals)
     gGame.intervals = []
     gBoard = buildBoard(gGame.currLvl.size)
-    setRandomMines(gGame.currLvl.mines)
-    console.log('gBoard', gBoard)
-    setMinesNegsCount(gBoard)
     renderBoard(gBoard)
 }
 

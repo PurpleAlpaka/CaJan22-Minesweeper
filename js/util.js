@@ -16,19 +16,6 @@ function clearIntervals(intervals) {
     }
 }
 
-function countMinesAround(board, pos) {
-    var count = 0
-    for (var i = pos.i - 1; i <= pos.i + 1; i++) {
-        if (i < 0 || i > board.length - 1) continue
-        for (var j = pos.j - 1; j <= pos.j + 1; j++) {
-            if (j < 0 || j > board.length - 1 ||
-                (i === pos.i && j === pos.j)) continue
-            if (!board[i][j].isMine) count++
-        }
-    }
-    return count
-}
-
 function countTime() {
     var display = ''
     gGame.secsPassed++
@@ -40,5 +27,9 @@ function countTime() {
 }
 
 function getPos(elCell) {
-    return { i: elCell.dataset.pos[0], j: elCell.dataset.pos[2] }
+    return { i: +elCell.dataset.pos[0], j: +elCell.dataset.pos[2] }
+}
+
+function getData(pos) {
+    return `[data-pos="${pos.i}-${pos.j}"]`
 }
