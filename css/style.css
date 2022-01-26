@@ -5,6 +5,7 @@
 html {
     height: 100%;
     width: 100%;
+    font-family: monospace;
 }
 
 body {
@@ -16,42 +17,75 @@ body {
 .upper {
     position: relative;
     height: 20rem;
+    background-color: #05a6af91;
+    border: #95a08f inset 3px;
+    margin-bottom: 5%;
+}
+
+.title {
+    margin: auto;
+    text-align: center;
 }
 
 .lvl-select {
     position: absolute;
-    top: 150px;
+    top: 20%;
+    left: 46%;
+    /* width: 13ch; */
+    font-size: 2rem;
+}
+
+.lvl-select {
+    display: inline-block;
+    width: 13ch
+}
+
+.radios {
     width: 10ch;
 }
 
-.lvl-select span {
-    display: inline-block;
+.easy {
+    color: #043a3d;
+}
+
+.medium {
+    color: yellow
+}
+
+.hard {
+    color: red;
 }
 
 .board-container {
     margin: auto;
-    min-height: 40rem;
-    min-width: 40rem;
+    min-height: 45rem;
+    min-width: 45rem;
 }
 
 .cell {
-    width: 5%;
     height: 5%;
+    width: 5%;
     text-align: center;
-    background-color: gray;
+    background-color: #058e95d7;
+    font-weight: 700;
+    padding: 0;
+}
+
+.cell.easy {
+    font-size: 1.25rem;
 }
 
 .hidden {
-    border: 0.5rem outset gray;
-    background-color: gray;
+    border: 0.5rem outset #95a08f;
+    background-color: #058e95d7;
 }
 
 .shown {
-    border: 5px inset gray;
+    border: 5px inset #95a08f;
 }
 
 .marked {
-    background: no-repeat center center / 25% url('../assets/flag.png'), gray;
+    background: no-repeat center center / 25% url('../assets/flag.png'), #058e95d7;
 }
 
 .mine {

@@ -13,11 +13,22 @@
 
 <body onload="initGame()" onkeyup="handleKey(event)">
     <div class="upper">
+        <div class="title">
+            <h1>Minesweeper</h1>
+        </div>
         <div class="lvl-select">
             <span>Choose a level: </span>
-            <input type="radio" id="easy" class="changeLvl" onchange="changeLvl(0)"> Easy</input><br>
-            <input type="radio" id="medium" class="changeLvl" onchange="changeLvl(1)"> Medium</input>
-            <input type="radio" id="hard" class="changeLvl" onchange="changeLvl(2)"> Hard</input>
+            <div class="radios">
+                <div class="easy">
+                    <input type="radio" id="easy" class="changeLvl" onchange="changeLvl(0)"> Easy</input><br>
+                </div>
+                <div class="medium">
+                    <input type="radio" id="medium" class="changeLvl" onchange="changeLvl(1)"> Medium</input>
+                </div>
+                <div class="hard">
+                    <input type="radio" id="hard" class="changeLvl" onchange="changeLvl(2)"> Hard</input>
+                </div>
+            </div>
         </div>
     </div>
     <table class="board-container">

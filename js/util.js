@@ -27,9 +27,9 @@ function countTime() {
 }
 
 function getPos(elCell) {
-    return { i: +elCell.dataset.pos[0], j: +elCell.dataset.pos[2] }
+    return { i: +elCell.dataset.i, j: +elCell.dataset.j }
 }
 
 function getData(pos) {
-    return `[data-pos="${pos.i}-${pos.j}"]`
+    return `[data-i="${pos.i}"][data-j="${pos.j}"]`
 }

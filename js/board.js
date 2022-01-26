@@ -22,7 +22,7 @@ function renderBoard(board) {
         strHTMl += `<tr>`
         for (var j = 0; j < board.length; j++) {
             const pos = { i, j }
-            strHTMl += `<td data-pos="${i}-${j}" class="cell hidden" onclick="cellClicked(this,${i},${j})" 
+            strHTMl += `<td data-i="${i}" data-j="${j}" class="cell hidden ${gGame.currLvl.id}" onclick="cellClicked(this)" 
             oncontextmenu="cellMarked(event)"></td>`
         }
         strHTMl += `</tr>`
@@ -32,6 +32,7 @@ function renderBoard(board) {
 
 function cellClicked(elCell) {
     const pos = getPos(elCell)
+    console.log('getPos', pos)
 
     if (!gGame.isOn || gBoard[pos.i][pos.j].isShown || gBoard[pos.i][pos.j].isMarked) return
     if (gGame.isFirstClick) {
@@ -56,6 +57,26 @@ function showCell(elCell, pos) {
     elCell.classList.remove('hidden')
     elCell.classList.add('shown')
     elCell.innerText = (gBoard[pos.i][pos.j].minesAroundCount) ? gBoard[pos.i][pos.j].minesAroundCount : ''
+    switch (gBoard[pos.i][pos.j].minesAroundCount) {
+        case 3:
+        case 4:
+            var newColor = 'yellow'
+            break
+        case 4:
+        case 5:
+            var newColor = 'red'
+        case 6:
+        case 7:
+            var newColor = rgb(143, 10, 10)
+            break
+        case 8:
+            var newColor = rgb(65, 5, 5)
+            break
+        default:
+            var newColor = '#043a3d'
+            break
+    }
+    elCell.style.color = newColor
 }
 
 function cellMarked(ev) {
