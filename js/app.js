@@ -6,6 +6,7 @@ var gBoard
 var gGame = {
     isOn: false,
     currLvl: LEVELS[0],
+    prevCheckedBox: null,
     minePositions: [{ i: 0, j: 0 }, { i: 1, j: 0 }],
     intervals: [], // [0] = timerInterval
     shownCount: 0,
@@ -20,6 +21,8 @@ function initGame() {
     gGame.markedCount = 0
     gGame.secsPassed = 0
     gGame.shownTarget = (gGame.currLvl.size ** 2) - gGame.currLvl.mines
+    gGame.prevCheckedBox = document.getElementById(gGame.currLvl.id)
+    gGame.prevCheckedBox.checked = true
     clearIntervals(gGame.intervals)
     gGame.intervals = []
     gBoard = buildBoard(gGame.currLvl.size)
@@ -53,6 +56,7 @@ function handleKey(ev) {
 }
 
 function changeLvl(lvlIdx) {
+    gGame.prevCheckedBox.checked = false
     gGame.currLvl = LEVELS[lvlIdx]
     initGame()
 }
