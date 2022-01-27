@@ -9,7 +9,6 @@
 // TODO: HARDCORE MODE: No helps allowed, 1 life
 
 // I'm sick AF, I know this looks like trash design wise but I don't have the energy, I hope to make it look good soon
-const MINE_IMG = 'M'
 const LEVELS = [{ id: 'easy', size: 4, mines: 2 }, { id: 'medium', size: 8, mines: 12 }, { id: 'hard', size: 12, mines: 30 }]
 const DEAFULT_SMILEY = '🐴'
 const HAPPY_SMILEY = '🦄'
@@ -132,8 +131,6 @@ function changeLvl(lvlIdx) {
     if (lvlIdx !== 3 && lvlIdx !== 4) {
         gGame.prevCheckedBox.checked = false
         gGame.currLvl = LEVELS[lvlIdx]
-        console.log('gGame.isManualMode', gGame.isManualMode)
-
         if (gGame.isManualMode) {
             gGame.manualMinesLeft = gGame.currLvl.mines
             document.querySelector('.mines-left span').innerText = gGame.manualMinesLeft
@@ -150,8 +147,6 @@ function changeLvl(lvlIdx) {
     } else {
         gGame.is7Boom = true
         gGame.isManualMode = !gGame.isManualMode
-        console.log('gGame.isManualMode', gGame.isManualMode)
-        console.log(' document.querySelector(', document.querySelector('.Manual'))
         document.querySelector('.start-game').style.display = 'none'
         document.querySelector('.Manual input').checked = false
     }
@@ -171,8 +166,6 @@ function useHint(elHint) {
 }
 
 function setHighScores(secsPassed, diff) {
-    console.log('localStorage.getItem(diff)', localStorage.getItem(diff))
-
     if (secsPassed < localStorage.getItem(diff) || !localStorage.getItem(diff)) localStorage[diff] = secsPassed
     document.querySelector(`.leaderboard .${diff} span`).innerText = localStorage[diff]
         // Unfinished!   
@@ -181,10 +174,8 @@ function setHighScores(secsPassed, diff) {
         // localStorage[diff] = gBestScores[diff].join(',')
         // document.querySelector(`.leaderboard .${diff}`).innerText = localStorage[diff]
 }
-
+// Unfinished!
 // function showLeader(diff) {
-//     console.log('document.querySelector(`.leaderboard .${diff}`)', document.querySelector(`.leaderboard .${diff}`))
-
 //     document.querySelector(`.leaderboard .${diff}`).style.display = 'block'
 // }
 
