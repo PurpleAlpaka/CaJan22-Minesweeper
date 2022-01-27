@@ -1,5 +1,6 @@
 'use strict'
 
+// TODO: Show number of mines to find in a level
 // TODO: make leaderboard dynamic and show all scores in order
 // TODO: Oragnize upper, oragnize features, make page look good
 // TODO: Make a flickerClass() func and refactor accordingly

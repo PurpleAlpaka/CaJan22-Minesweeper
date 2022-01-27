@@ -147,9 +147,7 @@ function hideCells(board, pos) {
             elCurrCell.classList.remove('shown')
             elCurrCell.classList.add('hidden')
             elCurrCell.innerText = ''
-            if (gBoard[i][j].isMine) {
-                elCurrCell.classList.remove('mine')
-            }
+            if (gBoard[i][j].isMine) elCurrCell.classList.remove('mine')
         }
     }
 }
