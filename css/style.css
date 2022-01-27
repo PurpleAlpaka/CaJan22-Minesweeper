@@ -151,7 +151,7 @@ input {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    background-image: url(../assets/heart.png)
+    background-image: url('../assets/heart.png')
 }
 
 .smiley {
@@ -177,7 +177,7 @@ input {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    background-image: url(../assets/hint.png)
+    background-image: url('../assets/hint.png')
 }
 
 .leaderboard {
