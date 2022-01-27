@@ -237,6 +237,10 @@ input {
     transition: all 0.8s
 }
 
+.undo:hover {
+    background-color: rgb(4, 64, 82);
+}
+
 .mines-left {
     cursor: initial;
 }
