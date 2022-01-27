@@ -1,5 +1,5 @@
 'use strict'
-// TODO: Fix manual position of mines - limit number of mines that can be placed and display the remaining amount
+
 // TODO: make leaderboard dynamic and show all scores in order
 // TODO: Oragnize upper, oragnize features, make page look good
 // TODO: Make a flickerClass() func and refactor accordingly
@@ -10,7 +10,7 @@
 
 // I'm sick AF, I know this looks like trash design wise but I don't have the energy, I hope to make it look good soon
 const MINE_IMG = 'M'
-const LEVELS = [{ id: 'easy', size: 4, mines: 2 }, { id: 'medium', size: 8, mines: 1 }, { id: 'hard', size: 12, mines: 1 }]
+const LEVELS = [{ id: 'easy', size: 4, mines: 2 }, { id: 'medium', size: 8, mines: 12 }, { id: 'hard', size: 12, mines: 30 }]
 const DEAFULT_SMILEY = '🐴'
 const HAPPY_SMILEY = '🦄'
 const DEAD_SMILEY = '☠️'
@@ -32,7 +32,8 @@ var gGame = {
     isHintClick: null,
     safeClicksLeft: 0,
     undoStates: [],
-    is7Boom: false
+    is7Boom: false,
+    manualMinesLeft: 0
 }
 
 function initGame() {
@@ -49,12 +50,14 @@ function initGame() {
     gGame.isHintClick = false
     gGame.safeClicksLeft = 3
     gGame.undoStates = []
+    gGame.manualMinesLeft = gGame.currLvl.mines
     clearIntervals(gGame.intervals)
     gGame.intervals = []
     document.querySelector('.time').innerText = '0'
     document.querySelector('.modal').style.display = 'none'
     document.querySelector('.smiley').innerText = DEAFULT_SMILEY
     document.querySelector('.safe-click span').innerText = gGame.safeClicksLeft
+    if (!gGame.isManualMode) document.querySelector('.mines-left').style.display = 'none'
     const elLives = document.querySelectorAll('.lives span')
     for (var i = 0; i < elLives.length; i++) {
         elLives[i].style.backgroundImage = 'url(../assets/heart.png)'
@@ -75,6 +78,11 @@ function checkWin() {
 }
 
 function startManualMode() {
+    if (gGame.manualMinesLeft !== 0) {
+        document.querySelector('.mines-left').style.backgroundColor = 'red'
+        setTimeout(() => { document.querySelector('.mines-left').style.backgroundColor = '' }, 3000)
+        return
+    }
     gGame.isManualMode = false
     renderBoard(gBoard)
     gGame.isManualMode = true
@@ -124,10 +132,29 @@ function changeLvl(lvlIdx) {
     if (lvlIdx !== 3 && lvlIdx !== 4) {
         gGame.prevCheckedBox.checked = false
         gGame.currLvl = LEVELS[lvlIdx]
+        console.log('gGame.isManualMode', gGame.isManualMode)
+
+        if (gGame.isManualMode) {
+            gGame.manualMinesLeft = gGame.currLvl.mines
+            document.querySelector('.mines-left span').innerText = gGame.manualMinesLeft
+        }
     } else if (lvlIdx === 3) {
         gGame.isManualMode = !gGame.isManualMode
-        if (gGame.isManualMode) document.querySelector('.start-game').style.display = 'block'
-    } else gGame.is7Boom = true
+        const displayMode = (gGame.isManualMode) ? 'block' : 'none'
+        document.querySelector('.start-game').style.display = displayMode
+        const elMinesLeft = document.querySelector('.mines-left')
+        elMinesLeft.style.display = displayMode
+        elMinesLeft.querySelector('span').innerText = gGame.manualMinesLeft
+        gGame.is7Boom = !gGame.is7Boom
+        document.querySelector('.BOOM input').checked = false
+    } else {
+        gGame.is7Boom = true
+        gGame.isManualMode = !gGame.isManualMode
+        console.log('gGame.isManualMode', gGame.isManualMode)
+        console.log(' document.querySelector(', document.querySelector('.Manual'))
+        document.querySelector('.start-game').style.display = 'none'
+        document.querySelector('.Manual input').checked = false
+    }
     initGame()
 }
 
@@ -148,6 +175,7 @@ function setHighScores(secsPassed, diff) {
 
     if (secsPassed < localStorage.getItem(diff) || !localStorage.getItem(diff)) localStorage[diff] = secsPassed
     document.querySelector(`.leaderboard .${diff} span`).innerText = localStorage[diff]
+        // Unfinished!   
         // gBestScores[diff].push(secsPassed)
         // gBestScores[diff].sort()
         // localStorage[diff] = gBestScores[diff].join(',')

@@ -45,8 +45,8 @@ function cellClicked(elCell) {
         gGame.intervals[0] = setInterval(countTime, 1000)
         if (!gGame.isManualMode) {
             addRandMines(gGame.currLvl.mines, pos)
-            setMinesNegsCount(gBoard)
         }
+        setMinesNegsCount(gBoard)
     }
     gGame.undoStates.push(JSON.parse(JSON.stringify(gBoard)))
     if (gGame.isHintClick) {
@@ -154,8 +154,11 @@ function hideCells(board, pos) {
     }
 }
 
-function markInput(i, j) {
-    gBoard[i][j].isMine = true
-    document.querySelector(getData({ i, j })).classList.add('mine')
+function markInput(elCell, i, j) {
+    if (gGame.manualMinesLeft <= 0 && !gBoard[i][j].isMine) return
+    gBoard[i][j].isMine = !gBoard[i][j].isMine
+    elCell.classList.toggle('mine')
+    gGame.manualMinesLeft += (gBoard[i][j].isMine) ? -1 : 1
+    document.querySelector('.mines-left span').innerText = gGame.manualMinesLeft
         // elCell.
 }

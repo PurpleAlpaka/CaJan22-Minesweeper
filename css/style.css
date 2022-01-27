@@ -92,6 +92,7 @@ input {
 
 .shown {
     border: 5px inset #95a08f;
+    background-color: rgb(4 81 104 / 91%)
 }
 
 .marked {
@@ -221,11 +222,12 @@ input {
 }
 
 .safe-click,
-.undo {
+.undo,
+.mines-left {
     position: relative;
     top: 25%;
     float: right;
-    border: 1px solid black;
+    /* border: 1px solid black; */
     font-size: 2rem;
     cursor: pointer;
     width: 17ch;
@@ -235,10 +237,22 @@ input {
     transition: all 0.8s
 }
 
+.mines-left {
+    cursor: initial;
+}
+
 .safe-click:hover {
     background-color: rgb(4, 64, 82);
 }
 
 .start-game {
     display: none;
+    cursor: pointer;
+    position: absolute;
+    top: 1%;
+    left: 1%;
+    background-color: rgba(5, 108, 139, 0.91);
+    border: 0.5rem outset #95a08f;
+    height: 20%;
+    font-size: 2rem;
 }

@@ -31,6 +31,7 @@
         </div>
         <div class="safe-click" onclick="showSafeClick(this)">Safe Clicks Left: <span></span></div>
         <div class="undo" onclick="undo()">Undo<span></span></div>
+        <div class="mines-left">You have <span></span> mines left to place</div>
         <div class="lvl-select">
             <span>Choose a level: </span>
             <div class="radios">
@@ -50,8 +51,8 @@
                     <input type="checkbox" id="BOOM" class="changeLvl" onchange="changeLvl(4)"> 7 BOOM</input>
                 </div>
             </div>
-            <button class="start-game" onclick="startManualMode()">Start Game On Manual Mode</button>
         </div>
+        <button class="start-game" onclick="startManualMode()">Start Game On Manual Mode</button>
     </div>
     <div class="smiley" onclick="initGame()"></div>
     <table class="board-container">
