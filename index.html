@@ -19,11 +19,15 @@
         <div class="time-display">
             Game Time: <span class="time"></span>
         </div>
-        <!-- TODO: Make lives better -->
         <div class="lives">
             <span class="life-1"></span>
             <span class="life-2"></span>
             <span class="life-3"></span>
+        </div>
+        <div class="hints">
+            <span class="hint-1" onclick="useHint(this)"></span>
+            <span class="hint-2" onclick="useHint(this)"></span>
+            <span class="hint-3" onclick="useHint(this)"></span>
         </div>
         <div class="lvl-select">
             <span>Choose a level: </span>
@@ -40,6 +44,7 @@
             </div>
         </div>
     </div>
+    <div class="smiley" onclick="initGame()"></div>
     <table class="board-container">
         <tbody class="board">
 

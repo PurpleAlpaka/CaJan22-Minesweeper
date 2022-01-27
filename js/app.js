@@ -2,6 +2,10 @@
 
 const MINE_IMG = 'M'
 const LEVELS = [{ id: 'easy', size: 4, mines: 2 }, { id: 'medium', size: 8, mines: 12 }, { id: 'hard', size: 12, mines: 30 }]
+const DEAFULT_SMILEY = '🐴'
+const HAPPY_SMILEY = '🦄'
+const DEAD_SMILEY = '☠️'
+
 var gBoard
 var gGame = {
     isOn: false,
@@ -13,7 +17,9 @@ var gGame = {
     markedCount: 0,
     secsPassed: 0,
     shownTarget: 0,
-    remainingLives: 0
+    remainingLives: 0,
+    isHintClick: null,
+    lastShownCells: []
 }
 
 function initGame() {
@@ -26,13 +32,25 @@ function initGame() {
     gGame.shownCount = 0
     gGame.prevCheckedBox = document.getElementById(gGame.currLvl.id)
     gGame.prevCheckedBox.checked = true
-    gGame.remainingLives = 80
+    gGame.remainingLives = 3
+    gGame.isHintClick = false
+    gGame.lastShownCells = []
     clearIntervals(gGame.intervals)
     gGame.intervals = []
     gBoard = buildBoard(gGame.currLvl.size)
     renderBoard(gBoard)
     document.querySelector('.time').innerText = '0'
     document.querySelector('.modal').style.display = 'none'
+    document.querySelector('.smiley').innerText = DEAFULT_SMILEY
+    const elLives = document.querySelectorAll('.lives span')
+    for (var i = 0; i < elLives.length; i++) {
+        elLives[i].style.backgroundImage = 'url(../assets/heart.png)'
+    }
+    const elHints = document.querySelectorAll('.hints span')
+    for (var i = 0; i < elHints.length; i++) {
+        elHints[i].style.backgroundImage = 'url(../assets/hint.png)'
+        elHints[i].addEventListener('click', useHint, 'this.target')
+    }
 }
 
 function checkWin() {
@@ -45,12 +63,18 @@ function checkWin() {
 
 function gameOver(isWin) {
     var winText
+    var currSmiley
     gGame.isOn = false
     clearIntervals(gGame.intervals)
     if (!isWin) {
         winText = 'lost...'
         showAllMines(gBoard)
-    } else winText = 'won!'
+        currSmiley = DEAD_SMILEY
+    } else {
+        winText = 'won!'
+        currSmiley = HAPPY_SMILEY
+    }
+    document.querySelector('.smiley').innerText = currSmiley
     document.querySelector('.win-text').innerText = winText
     document.querySelector('.modal').style.display = 'block'
 }
@@ -82,6 +106,14 @@ function changeLvl(lvlIdx) {
 }
 
 function removeLife() {
-    // document.querySelector(`.life-${gGame.remainingLives}`).backgroundImage = ('url(../assets/deadHeart.png)')
+    document.querySelector(`.life-${gGame.remainingLives}`).style.backgroundImage = ('url(../assets/deadHeart.png)')
     return --gGame.remainingLives
+}
+
+function useHint(elHint) {
+    console.log('elHint', elHint)
+
+    elHint.onclick = ''
+    elHint.style.backgroundImage = 'url(../assets/hintOff.png)'
+    gGame.isHintClick = true
 }

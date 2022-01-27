@@ -19,7 +19,7 @@ body {
     height: 20rem;
     background-color: #05a6af91;
     border: #95a08f inset 3px;
-    margin-bottom: 5%;
+    margin-bottom: 3%;
 }
 
 .title {
@@ -109,7 +109,7 @@ input {
     text-align: center;
     background-color: rgb(4 81 104 / 91%);
     border-radius: 10px;
-    top: 23%;
+    top: 39%;
     left: 23%;
     transition: all 1s;
     line-height: 10rem;
@@ -136,13 +136,45 @@ input {
     font-size: 2rem;
 }
 
+.lives {
+    /* position: absolute; */
+    float: right;
+    /* float: top; */
+    /* top: 150px */
+}
+
 .lives span {
     display: inline-block;
     height: 5rem;
     width: 5rem;
-    background-image: url(../assets/heart.png);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    background: no-repeat center / center url(../assets/heart.png)
+    background-image: url(../assets/heart.png)
+}
+
+.smiley {
+    cursor: pointer;
+    font-size: 3rem;
+    line-height: 4rem;
+    text-align: center;
+    margin: auto;
+    height: 5rem;
+    width: 5rem;
+    border: 5px inset #95a08f;
+    background-color: #075c61be
+}
+
+.hints {
+    cursor: pointer;
+}
+
+.hints span {
+    display: inline-block;
+    height: 5rem;
+    width: 5rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url(../assets/hint.png)
 }
