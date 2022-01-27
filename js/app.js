@@ -1,18 +1,16 @@
 'use strict'
-// TODO: Safe Click
-// TODO: Manual position of mines
-// TODO: Undo
-// TODO: 7 BOOM
+// TODO: Fix manual position of mines - limit number of mines that can be placed and display the remaining amount
 // TODO: make leaderboard dynamic and show all scores in order
-// TODO: prettify
+// TODO: Oragnize upper, oragnize features, make page look good
 // TODO: Make a flickerClass() func and refactor accordingly
 // TODO: Reduce / Oragnize gGame and initilaztion
 // TODO: Show helps used in game over modal
 // TODO: Easter Egg
 // TODO: HARDCORE MODE: No helps allowed, 1 life
 
+// I'm sick AF, I know this looks like trash design wise but I don't have the energy, I hope to make it look good soon
 const MINE_IMG = 'M'
-const LEVELS = [{ id: 'easy', size: 4, mines: 1 }, { id: 'medium', size: 8, mines: 1 }, { id: 'hard', size: 12, mines: 1 }]
+const LEVELS = [{ id: 'easy', size: 4, mines: 2 }, { id: 'medium', size: 8, mines: 1 }, { id: 'hard', size: 12, mines: 1 }]
 const DEAFULT_SMILEY = '🐴'
 const HAPPY_SMILEY = '🦄'
 const DEAD_SMILEY = '☠️'
@@ -21,6 +19,7 @@ const DEAD_SMILEY = '☠️'
 var gBoard
 var gGame = {
     isOn: false,
+    isManualMode: false,
     isFirstClick: null,
     currLvl: LEVELS[0],
     prevCheckedBox: null,
@@ -31,7 +30,9 @@ var gGame = {
     shownTarget: 0,
     remainingLives: 0,
     isHintClick: null,
-    safeClicksLeft: 0
+    safeClicksLeft: 0,
+    undoStates: [],
+    is7Boom: false
 }
 
 function initGame() {
@@ -47,13 +48,13 @@ function initGame() {
     gGame.remainingLives = 3
     gGame.isHintClick = false
     gGame.safeClicksLeft = 3
+    gGame.undoStates = []
     clearIntervals(gGame.intervals)
     gGame.intervals = []
-    gBoard = buildBoard(gGame.currLvl.size)
-    renderBoard(gBoard)
     document.querySelector('.time').innerText = '0'
     document.querySelector('.modal').style.display = 'none'
     document.querySelector('.smiley').innerText = DEAFULT_SMILEY
+    document.querySelector('.safe-click span').innerText = gGame.safeClicksLeft
     const elLives = document.querySelectorAll('.lives span')
     for (var i = 0; i < elLives.length; i++) {
         elLives[i].style.backgroundImage = 'url(../assets/heart.png)'
@@ -63,12 +64,21 @@ function initGame() {
         elHints[i].style.backgroundImage = 'url(../assets/hint.png)'
         elHints[i].addEventListener('click', useHint, 'this.target')
     }
+    gBoard = buildBoard(gGame.currLvl.size)
+    renderBoard(gBoard)
 }
 
 function checkWin() {
     if (gGame.shownCount !== gGame.shownTarget || gGame.currLvl.mines !== gGame.markedCount) return false
 
     gameOver(true)
+}
+
+function startManualMode() {
+    gGame.isManualMode = false
+    renderBoard(gBoard)
+    gGame.isManualMode = true
+    document.querySelector('.start-game').style.display = 'none'
 }
 
 function gameOver(isWin) {
@@ -111,8 +121,13 @@ function handleKey(ev) {
 }
 
 function changeLvl(lvlIdx) {
-    gGame.prevCheckedBox.checked = false
-    gGame.currLvl = LEVELS[lvlIdx]
+    if (lvlIdx !== 3 && lvlIdx !== 4) {
+        gGame.prevCheckedBox.checked = false
+        gGame.currLvl = LEVELS[lvlIdx]
+    } else if (lvlIdx === 3) {
+        gGame.isManualMode = !gGame.isManualMode
+        if (gGame.isManualMode) document.querySelector('.start-game').style.display = 'block'
+    } else gGame.is7Boom = true
     initGame()
 }
 
@@ -145,8 +160,10 @@ function setHighScores(secsPassed, diff) {
 //     document.querySelector(`.leaderboard .${diff}`).style.display = 'block'
 // }
 
-function showSafeClick() {
+function showSafeClick(elBtn) {
     if (gGame.safeClicksLeft <= 0) return
+    gGame.safeClicksLeft--
+        elBtn.querySelector('span').innerText = gGame.safeClicksLeft
     var safeClicks = []
     for (var i = 0; i < gBoard.length; i++) {
         for (var j = 0; j < gBoard.length; j++) {
@@ -155,5 +172,12 @@ function showSafeClick() {
         }
     }
     const safeClick = safeClicks[getRandomInt(0, safeClicks.length)]
-    document.querySelector()
+    document.querySelector(getData(safeClick)).style.backgroundColor = 'green'
+    setTimeout(() => { document.querySelector(getData(safeClick)).style.backgroundColor = '' }, 3000)
+}
+
+function undo() {
+    if (!gGame.undoStates) return
+    gBoard = gGame.undoStates.pop()
+    renderBoard(gBoard)
 }

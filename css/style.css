@@ -219,3 +219,26 @@ input {
     width: 1ch;
     margin: 0;
 }
+
+.safe-click,
+.undo {
+    position: relative;
+    top: 25%;
+    float: right;
+    border: 1px solid black;
+    font-size: 2rem;
+    cursor: pointer;
+    width: 17ch;
+    text-align: center;
+    background-color: rgb(4 81 104 / 91%);
+    border: 0.5rem outset #95a08f;
+    transition: all 0.8s
+}
+
+.safe-click:hover {
+    background-color: rgb(4, 64, 82);
+}
+
+.start-game {
+    display: none;
+}

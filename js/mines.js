@@ -4,13 +4,24 @@ function addRandMines(minesCount, clickPos) {
     // For tests
     // gBoard[0][0].isMine = true
     if (minesCount <= 0) return
+    if (gGame.is7Boom) {
+        for (var i = 0; i < gBoard.length; i++) {
+            for (var j = 0; j < gBoard.length; j++) {
+                console.log('gBoard[i][j].cellId', gBoard[i][j].cellId)
+                if (!(gBoard[i][j].cellId % 7)) gBoard[i][j].isMine = true
+            }
+        }
+        return
+    }
     const randPos = {
         i: getRandomInt(0, gBoard.length),
         j: getRandomInt(0, gBoard[0].length)
     }
     if (randPos.i === clickPos.i && randPos.j === clickPos.j ||
-        gBoard[randPos.i][randPos.j].isMine) addRandMines(minesCount, clickPos)
-    else if (gBoard) {
+        gBoard[randPos.i][randPos.j].isMine) {
+
+        addRandMines(minesCount, clickPos)
+    } else if (gBoard) {
         gBoard[randPos.i][randPos.j].isMine = true
         addRandMines(--minesCount, clickPos)
     }

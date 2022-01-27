@@ -29,7 +29,8 @@
             <span class="hint-2" onclick="useHint(this)"></span>
             <span class="hint-3" onclick="useHint(this)"></span>
         </div>
-        <div class="safe-click" onclick="showSafeClick()"> </div>
+        <div class="safe-click" onclick="showSafeClick(this)">Safe Clicks Left: <span></span></div>
+        <div class="undo" onclick="undo()">Undo<span></span></div>
         <div class="lvl-select">
             <span>Choose a level: </span>
             <div class="radios">
@@ -42,7 +43,14 @@
                 <div class="hard">
                     <input type="radio" id="hard" class="changeLvl" onchange="changeLvl(2)"> Hard</input>
                 </div>
+                <div class="Manual">
+                    <input type="checkbox" id="manual" class="changeLvl" onchange="changeLvl(3)"> Manual</input>
+                </div>
+                <div class="BOOM">
+                    <input type="checkbox" id="BOOM" class="changeLvl" onchange="changeLvl(4)"> 7 BOOM</input>
+                </div>
             </div>
+            <button class="start-game" onclick="startManualMode()">Start Game On Manual Mode</button>
         </div>
     </div>
     <div class="smiley" onclick="initGame()"></div>
