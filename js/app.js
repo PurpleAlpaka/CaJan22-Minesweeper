@@ -1,11 +1,23 @@
 'use strict'
+// TODO: Safe Click
+// TODO: Manual position of mines
+// TODO: Undo
+// TODO: 7 BOOM
+// TODO: make leaderboard dynamic and show all scores in order
+// TODO: prettify
+// TODO: Make a flickerClass() func and refactor accordingly
+// TODO: Reduce / Oragnize gGame and initilaztion
+// TODO: Show helps used in game over modal
+// TODO: Easter Egg
+// TODO: HARDCORE MODE: No helps allowed, 1 life
 
 const MINE_IMG = 'M'
-const LEVELS = [{ id: 'easy', size: 4, mines: 2 }, { id: 'medium', size: 8, mines: 12 }, { id: 'hard', size: 12, mines: 30 }]
+const LEVELS = [{ id: 'easy', size: 4, mines: 1 }, { id: 'medium', size: 8, mines: 1 }, { id: 'hard', size: 12, mines: 1 }]
 const DEAFULT_SMILEY = '🐴'
 const HAPPY_SMILEY = '🦄'
 const DEAD_SMILEY = '☠️'
 
+// var gBestScores = { easy: [], medium: [], hard: [] }
 var gBoard
 var gGame = {
     isOn: false,
@@ -19,7 +31,7 @@ var gGame = {
     shownTarget: 0,
     remainingLives: 0,
     isHintClick: null,
-    lastShownCells: []
+    safeClicksLeft: 0
 }
 
 function initGame() {
@@ -34,7 +46,7 @@ function initGame() {
     gGame.prevCheckedBox.checked = true
     gGame.remainingLives = 3
     gGame.isHintClick = false
-    gGame.lastShownCells = []
+    gGame.safeClicksLeft = 3
     clearIntervals(gGame.intervals)
     gGame.intervals = []
     gBoard = buildBoard(gGame.currLvl.size)
@@ -54,8 +66,6 @@ function initGame() {
 }
 
 function checkWin() {
-    console.log('gGame.shownTarget', gGame.shownTarget)
-    console.log('gGame.shownCount', gGame.shownCount)
     if (gGame.shownCount !== gGame.shownTarget || gGame.currLvl.mines !== gGame.markedCount) return false
 
     gameOver(true)
@@ -73,6 +83,7 @@ function gameOver(isWin) {
     } else {
         winText = 'won!'
         currSmiley = HAPPY_SMILEY
+        setHighScores(gGame.secsPassed, gGame.currLvl.id)
     }
     document.querySelector('.smiley').innerText = currSmiley
     document.querySelector('.win-text').innerText = winText
@@ -111,9 +122,38 @@ function removeLife() {
 }
 
 function useHint(elHint) {
-    console.log('elHint', elHint)
-
-    elHint.onclick = ''
-    elHint.style.backgroundImage = 'url(../assets/hintOff.png)'
+    if (gGame.isHintClick) return
+    elHint.target.onclick = ''
+    elHint.target.style.backgroundImage = 'url(../assets/hintOff.png)'
     gGame.isHintClick = true
+}
+
+function setHighScores(secsPassed, diff) {
+    console.log('localStorage.getItem(diff)', localStorage.getItem(diff))
+
+    if (secsPassed < localStorage.getItem(diff) || !localStorage.getItem(diff)) localStorage[diff] = secsPassed
+    document.querySelector(`.leaderboard .${diff} span`).innerText = localStorage[diff]
+        // gBestScores[diff].push(secsPassed)
+        // gBestScores[diff].sort()
+        // localStorage[diff] = gBestScores[diff].join(',')
+        // document.querySelector(`.leaderboard .${diff}`).innerText = localStorage[diff]
+}
+
+// function showLeader(diff) {
+//     console.log('document.querySelector(`.leaderboard .${diff}`)', document.querySelector(`.leaderboard .${diff}`))
+
+//     document.querySelector(`.leaderboard .${diff}`).style.display = 'block'
+// }
+
+function showSafeClick() {
+    if (gGame.safeClicksLeft <= 0) return
+    var safeClicks = []
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard.length; j++) {
+            if (!gBoard[i][j].isMarked && !gBoard[i][j].isShown &&
+                !gBoard[i][j].isMine) safeClicks.push({ i, j })
+        }
+    }
+    const safeClick = safeClicks[getRandomInt(0, safeClicks.length)]
+    document.querySelector()
 }

@@ -32,10 +32,8 @@ function renderBoard(board) {
 
 function cellClicked(elCell) {
     const pos = getPos(elCell)
-    console.log('getPos', pos)
 
     if (!gGame.isOn || gBoard[pos.i][pos.j].isShown || gBoard[pos.i][pos.j].isMarked) return
-    gGame.lastShownCells = []
     if (gGame.isFirstClick) {
         gGame.isFirstClick = false
         gGame.intervals[0] = setInterval(countTime, 1000)
@@ -43,8 +41,11 @@ function cellClicked(elCell) {
         setMinesNegsCount(gBoard)
     }
     if (gGame.isHintClick) {
-        setTimeout(hideCells, 1000, gGame.lastShownCells)
+        setTimeout(hideCells, 1000, gBoard, pos)
         gGame.isHintClick = false
+        gBoard[pos.i][pos.j].isShown = true
+        showCell(elCell, pos)
+        return expandNegs(gBoard, pos, true)
     } else if (gBoard[pos.i][pos.j].isMine) {
         if (removeLife() <= 0) return gameOver(false)
         else {
@@ -63,8 +64,7 @@ function cellClicked(elCell) {
 
 function showCell(elCell, pos) {
     gGame.shownCount++
-        gGame.lastShownCells.push(pos)
-    gBoard[pos.i][pos.j].isShown = true
+        gBoard[pos.i][pos.j].isShown = true
     elCell.classList.remove('hidden')
     elCell.classList.add('shown')
     elCell.innerText = (gBoard[pos.i][pos.j].minesAroundCount) ? gBoard[pos.i][pos.j].minesAroundCount : ''
@@ -103,8 +103,7 @@ function cellMarked(ev) {
         gGame.intervals[0] = setInterval(countTime, 1000)
     }
     gBoard[pos.i][pos.j].isMarked = !gBoard[pos.i][pos.j].isMarked
-    gGame.markedCount++
-        console.log('gGame.markedCount', gGame.markedCount)
+    gGame.markedCount += (gBoard[pos.i][pos.j].isMarked) ? 1 : -1
 
     ev.target.classList.toggle('marked')
     checkWin()
@@ -112,7 +111,7 @@ function cellMarked(ev) {
 
 var count = 0
 
-function expandNegs(board, pos) {
+function expandNegs(board, pos, isHintClick) {
     for (var i = pos.i - 1; i <= pos.i + 1; i++) {
         if (i < 0 || i > board.length - 1) continue
         for (var j = pos.j - 1; j <= pos.j + 1; j++) {
@@ -120,27 +119,45 @@ function expandNegs(board, pos) {
             if (i === pos.i && j === pos.j) continue
             if (board[i][j].isShown) continue
             if (board[i][j].isMarked) continue
-            if (board[i][j].isMine) continue
+            if (board[i][j].isMine && !isHintClick) continue
             const elCurrCell = document.querySelector(getData({ i, j }))
             gBoard[pos.i][pos.j].isShown = true
             showCell(elCurrCell, { i, j })
             if (board[i][j].minesAroundCount !== 0) continue
-            expandNegs(board, { i, j })
+            if (!isHintClick) expandNegs(board, { i, j })
         }
     }
 }
 
-function hideCells(cells) {
-    console.log('cells', cells)
-    for (var i = 0; i < cells.length; i++) {
-        const elCurrCell = document.querySelector(getData(cells[i]))
-        elCurrCell.classList.remove('shown')
-        elCurrCell.classList.add('hidden')
-        elCurrCell.innerText = ''
-        gGame.shownCount--
-            gBoard[cells[i].i][cells[i].j].isShown = false
-        if (gBoard[cells[i].i][cells[i].j].isMine) {
-            elCurrCell.classList.remove('mine')
+function expandImeediateNegs(board, pos) {
+
+}
+
+function hideCells(board, pos) {
+    for (var i = pos.i - 1; i <= pos.i + 1; i++) {
+        if (i < 0 || i > board.length - 1) continue
+        for (var j = pos.j - 1; j <= pos.j + 1; j++) {
+            if (j < 0 || j > board.length - 1) continue
+            gGame.shownCount--
+                gBoard[i][j].isShown = false
+            const elCurrCell = document.querySelector(getData({ i, j }))
+            elCurrCell.classList.remove('shown')
+            elCurrCell.classList.add('hidden')
+            elCurrCell.innerText = ''
+            if (gBoard[i][j].isMine) {
+                elCurrCell.classList.remove('mine')
+            }
         }
     }
+    // for (var i = 0; i < cells.length; i++) {
+    //     const elCurrCell = document.querySelector(getData(cells[i]))
+    //     elCurrCell.classList.remove('shown')
+    //     elCurrCell.classList.add('hidden')
+    //     elCurrCell.innerText = ''
+    //     gGame.shownCount--
+    //         gBoard[cells[i].i][cells[i].j].isShown = false
+    //     if (gBoard[cells[i].i][cells[i].j].isMine) {
+    //         elCurrCell.classList.remove('mine')
+    //     }
+    // }
 }

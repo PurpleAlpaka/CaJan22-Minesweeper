@@ -29,6 +29,7 @@
             <span class="hint-2" onclick="useHint(this)"></span>
             <span class="hint-3" onclick="useHint(this)"></span>
         </div>
+        <div class="safe-click" onclick="showSafeClick()"> </div>
         <div class="lvl-select">
             <span>Choose a level: </span>
             <div class="radios">
@@ -50,6 +51,21 @@
 
         </tbody>
     </table>
+    <div class="leaderboard">
+        <span>Leaderboard:</span>
+        <!-- <button onclick="showLeader('easy')" class="easy-btn">Easy</button>
+        <button onclick="showLeader('medium')" class="medium-btn">Medium</button>
+        <button onclick="showLeader('hard')" class="hard-btn">Hard</button> -->
+        <div class="easy">
+            Easy: <span></span>
+        </div>
+        <div class="medium">
+            Medium: <span></span>
+        </div>
+        <div class="hard">
+            Hard: <span></span>
+        </div>
+    </div>
     <div class="modal">
         <span class="game-over">Game Over...</span>
         <span class="win-text-display">You <span class="win-text"></span></span>

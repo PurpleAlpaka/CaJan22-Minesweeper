@@ -178,3 +178,44 @@ input {
     background-position: center;
     background-image: url(../assets/hint.png)
 }
+
+.leaderboard {
+    height: 50%;
+    width: 35ch;
+    border: 5px inset #95a08f;
+    position: absolute;
+    top: 30%;
+    left: 6%;
+    background-color: rgb(4 81 104 / 91%);
+}
+
+.leaderboard span {
+    color: black;
+    font-weight: 600;
+    font-size: 2rem;
+    display: block;
+}
+
+.leaderboard .easy {
+    border: 1px solid black;
+    font-size: 2rem;
+}
+
+.leaderboard .medium {
+    font-size: 2rem;
+    border: 1px solid black;
+}
+
+.leaderboard .hard {
+    font-size: 2rem;
+    border: 1px solid black;
+}
+
+.leaderboard .scores {
+    color: black;
+    /* display: inline-block;  */
+    font-weight: 600;
+    font-size: 2rem;
+    width: 1ch;
+    margin: 0;
+}
