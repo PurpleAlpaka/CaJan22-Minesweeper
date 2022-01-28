@@ -43,17 +43,15 @@ function cellClicked(elCell) {
     if (gGame.isFirstClick) {
         gGame.isFirstClick = false
         gGame.intervals[0] = setInterval(countTime, 1000)
-        if (!gGame.isManualMode) {
-            addRandMines(gGame.currLvl.mines, pos)
-        }
+        if (!gGame.isManualMode) addRandMines(gGame.currLvl.mines, pos)
         setMinesNegsCount(gBoard)
     }
     gGame.undoStates.push(JSON.parse(JSON.stringify(gBoard)))
     if (gGame.isHintClick) {
         setTimeout(hideCells, 1000, gBoard, pos)
-        gGame.isHintClick = false
         gBoard[pos.i][pos.j].isShown = true
         showCell(elCell, pos)
+        gGame.isHintClick = false
         return expandNegs(gBoard, pos, true)
     } else if (gBoard[pos.i][pos.j].isMine) {
         if (removeLife() <= 0) return gameOver(false)
@@ -72,6 +70,7 @@ function cellClicked(elCell) {
 }
 
 function showCell(elCell, pos) {
+    if (gGame.isHintClick) gGame.shownHintCells.push(pos)
     gGame.shownCount++
         gBoard[pos.i][pos.j].isShown = true
     elCell.classList.remove('hidden')
@@ -127,6 +126,7 @@ function expandNegs(board, pos, isHintClick) {
             if (board[i][j].isShown) continue
             if (board[i][j].isMarked) continue
             if (board[i][j].isMine && !isHintClick) continue
+            if (isHintClick) gGame.shownHintCells.push({ i, j })
             const elCurrCell = document.querySelector(getData({ i, j }))
             gBoard[pos.i][pos.j].isShown = true
             showCell(elCurrCell, { i, j })
@@ -136,20 +136,31 @@ function expandNegs(board, pos, isHintClick) {
     }
 }
 
-function hideCells(board, pos) {
-    for (var i = pos.i - 1; i <= pos.i + 1; i++) {
-        if (i < 0 || i > board.length - 1) continue
-        for (var j = pos.j - 1; j <= pos.j + 1; j++) {
-            if (j < 0 || j > board.length - 1) continue
-            gGame.shownCount--
-                gBoard[i][j].isShown = false
-            const elCurrCell = document.querySelector(getData({ i, j }))
-            elCurrCell.classList.remove('shown')
-            elCurrCell.classList.add('hidden')
-            elCurrCell.innerText = ''
-            if (gBoard[i][j].isMine) elCurrCell.classList.remove('mine')
-        }
+function hideCells() {
+    for (var i = 0; i < gGame.shownHintCells.length; i++) {
+        const currPos = gGame.shownHintCells[i]
+        gBoard[currPos.i][currPos.j].isShown = false
+        const elCurrCell = document.querySelector(getData(currPos))
+        elCurrCell.classList.remove('shown')
+        elCurrCell.classList.add('hidden')
+        elCurrCell.innerText = ''
+        if (gBoard[currPos.i][currPos.j].isMine) elCurrCell.classList.remove('mine')
+        gGame.shownCount--
+
     }
+    // for (var i = pos.i - 1; i <= pos.i + 1; i++) {
+    //     if (i < 0 || i > board.length - 1) continue
+    //     for (var j = pos.j - 1; j <= pos.j + 1; j++) {
+    //         if (j < 0 || j > board.length - 1) continue
+    //         gGame.shownCount--
+    //             gBoard[i][j].isShown = false
+    //         const elCurrCell = document.querySelector(getData({ i, j }))
+    //         elCurrCell.classList.remove('shown')
+    //         elCurrCell.classList.add('hidden')
+    //         elCurrCell.innerText = ''
+    //         if (gBoard[i][j].isMine) elCurrCell.classList.remove('mine')
+    //     }
+    // }
 }
 
 function markInput(elCell, i, j) {

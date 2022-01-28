@@ -7,7 +7,6 @@ function addRandMines(minesCount, clickPos) {
     if (gGame.is7Boom) {
         for (var i = 0; i < gBoard.length; i++) {
             for (var j = 0; j < gBoard.length; j++) {
-                console.log('gBoard[i][j].cellId', gBoard[i][j].cellId)
                 if (!(gBoard[i][j].cellId % 7)) gBoard[i][j].isMine = true
             }
         }

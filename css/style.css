@@ -12,6 +12,7 @@ body {
     background-image: url('../assets/background1.jpg');
     background-repeat: no-repeat;
     background-size: cover;
+    margin: 0;
 }
 
 .upper {
@@ -105,28 +106,46 @@ input {
 
 .modal {
     position: absolute;
-    height: 50%;
-    width: 50%;
     text-align: center;
     background-color: rgb(4 81 104 / 91%);
     border-radius: 10px;
-    top: 39%;
-    left: 23%;
     transition: all 1s;
-    line-height: 10rem;
 }
 
-.game-over,
-.win-text-display {
+.game-over {
+    line-height: 10rem;
+    right: 0;
+    bottom: 0;
+    height: 50%;
+    width: 32%;
+}
+
+.rules {
+    top: 27%;
+    font-size: 1.5rem;
+}
+
+.text-display {
     display: block;
     font-weight: 600;
     font-size: 3em;
 }
 
-.time-display {
-    font-size: 2rem;
-    width: 10ch;
+.live-mines-display,
+.live-time-display {
+    font-size: 5rem;
     text-align: center;
+    position: absolute;
+    bottom: 0;
+}
+
+.live-mines-display {
+    right: 0;
+    width: 11ch;
+}
+
+.live-time-display {
+    width: 10ch;
 }
 
 .final-time {
@@ -135,23 +154,6 @@ input {
     width: 24ch;
     line-height: 4rem;
     font-size: 2rem;
-}
-
-.lives {
-    /* position: absolute; */
-    float: right;
-    /* float: top; */
-    /* top: 150px */
-}
-
-.lives span {
-    display: inline-block;
-    height: 5rem;
-    width: 5rem;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-image: url('../assets/heart.png')
 }
 
 .smiley {
@@ -166,10 +168,21 @@ input {
     background-color: #075c61be
 }
 
+.hints,
+.lives {
+    position: absolute;
+}
+
 .hints {
+    left: 37%;
     cursor: pointer;
 }
 
+.lives {
+    left: 52%;
+}
+
+.lives span,
 .hints span {
     display: inline-block;
     height: 5rem;
@@ -177,7 +190,6 @@ input {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    background-image: url('../assets/hint.png')
 }
 
 .leaderboard {
@@ -185,9 +197,15 @@ input {
     width: 35ch;
     border: 5px inset #95a08f;
     position: absolute;
-    top: 30%;
-    left: 6%;
+    top: 26.7%;
+    left: 0;
     background-color: rgb(4 81 104 / 91%);
+    font-size: 2rem;
+}
+
+.leaderboard div {
+    border: 1px solid black;
+    display: inline-block;
 }
 
 .leaderboard span {
@@ -197,37 +215,14 @@ input {
     display: block;
 }
 
-.leaderboard .easy {
-    border: 1px solid black;
-    font-size: 2rem;
-}
-
-.leaderboard .medium {
-    font-size: 2rem;
-    border: 1px solid black;
-}
-
-.leaderboard .hard {
-    font-size: 2rem;
-    border: 1px solid black;
-}
-
-.leaderboard .scores {
-    color: black;
-    /* display: inline-block;  */
-    font-weight: 600;
-    font-size: 2rem;
-    width: 1ch;
-    margin: 0;
-}
-
 .safe-click,
 .undo,
-.mines-left {
-    position: relative;
-    top: 25%;
+.mines-left,
+.start-game {
+    position: absolute;
+    right: 0;
     float: right;
-    /* border: 1px solid black; */
+    margin: 0;
     font-size: 2rem;
     cursor: pointer;
     width: 17ch;
@@ -237,26 +232,38 @@ input {
     transition: all 0.8s
 }
 
-.undo:hover {
+.safe-click:hover,
+.undo:hover,
+.start-game:hover {
     background-color: rgb(4, 64, 82);
+}
+
+.safe-click {
+    top: 101.4%;
+}
+
+.undo {
+    top: 131.6%;
+    float: right;
 }
 
 .mines-left {
     cursor: initial;
-}
-
-.safe-click:hover {
-    background-color: rgb(4, 64, 82);
+    top: 149%;
 }
 
 .start-game {
     display: none;
+    top: 178.9%;
+}
+
+.show-rules {
+    font-size: 2rem;
     cursor: pointer;
     position: absolute;
-    top: 1%;
-    left: 1%;
-    background-color: rgba(5, 108, 139, 0.91);
-    border: 0.5rem outset #95a08f;
-    height: 20%;
-    font-size: 2rem;
+    top: 0;
+}
+
+p {
+    margin: 0;
 }

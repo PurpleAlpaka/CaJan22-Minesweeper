@@ -1,15 +1,16 @@
 'use strict'
 
-// TODO: Show number of mines to find in a level
+// TODO: Add close buttons to modals, and close rules with escape
+// TODO: Undo should undo lives and hints used aswell as the board state
+// TODO: Make page look good
 // TODO: make leaderboard dynamic and show all scores in order
-// TODO: Oragnize upper, oragnize features, make page look good
 // TODO: Make a flickerClass() func and refactor accordingly
+// TODO: Make a changeDisplay func() and refactor accordingly
 // TODO: Reduce / Oragnize gGame and initilaztion
 // TODO: Show helps used in game over modal
-// TODO: Easter Egg
 // TODO: HARDCORE MODE: No helps allowed, 1 life
+// TODO: Easter Egg
 
-// I'm sick AF, I know this looks like trash design wise but I don't have the energy, I hope to make it look good soon
 const LEVELS = [{ id: 'easy', size: 4, mines: 2 }, { id: 'medium', size: 8, mines: 12 }, { id: 'hard', size: 12, mines: 30 }]
 const DEAFULT_SMILEY = '🐴'
 const HAPPY_SMILEY = '🦄'
@@ -51,13 +52,16 @@ function initGame() {
     gGame.safeClicksLeft = 3
     gGame.undoStates = []
     gGame.manualMinesLeft = gGame.currLvl.mines
+    gGame.shownHintCells = []
     clearIntervals(gGame.intervals)
     gGame.intervals = []
     document.querySelector('.time').innerText = '0'
-    document.querySelector('.modal').style.display = 'none'
+    document.querySelector('.mines').innerText = gGame.currLvl.mines
     document.querySelector('.smiley').innerText = DEAFULT_SMILEY
     document.querySelector('.safe-click span').innerText = gGame.safeClicksLeft
     if (!gGame.isManualMode) document.querySelector('.mines-left').style.display = 'none'
+    document.querySelector('.game-over').style.display = 'none'
+    document.querySelector('.rules').style.display = 'none'
     const elLives = document.querySelectorAll('.lives span')
     for (var i = 0; i < elLives.length; i++) {
         elLives[i].style.backgroundImage = 'url(../assets/heart.png)'
@@ -73,7 +77,6 @@ function initGame() {
 
 function checkWin() {
     if (gGame.shownCount !== gGame.shownTarget || gGame.currLvl.mines !== gGame.markedCount) return false
-
     gameOver(true)
 }
 
@@ -104,8 +107,8 @@ function gameOver(isWin) {
         setHighScores(gGame.secsPassed, gGame.currLvl.id)
     }
     document.querySelector('.smiley').innerText = currSmiley
-    document.querySelector('.win-text').innerText = winText
-    document.querySelector('.modal').style.display = 'block'
+    document.querySelector('.game-over-text').innerText = winText
+    document.querySelector('.game-over').style.display = 'block'
 }
 
 function handleKey(ev) {
@@ -143,11 +146,11 @@ function changeLvl(lvlIdx) {
         const elMinesLeft = document.querySelector('.mines-left')
         elMinesLeft.style.display = displayMode
         elMinesLeft.querySelector('span').innerText = gGame.manualMinesLeft
-        gGame.is7Boom = !gGame.is7Boom
+        gGame.is7Boom = false
         document.querySelector('.BOOM input').checked = false
     } else {
-        gGame.is7Boom = true
-        gGame.isManualMode = !gGame.isManualMode
+        gGame.is7Boom = !gGame.is7Boom
+        gGame.isManualMode = false
         document.querySelector('.start-game').style.display = 'none'
         document.querySelector('.Manual input').checked = false
     }
@@ -197,7 +200,17 @@ function showSafeClick(elBtn) {
 }
 
 function undo() {
-    if (!gGame.undoStates) return
+    if (gGame.undoStates.length === 0) return
     gBoard = gGame.undoStates.pop()
+    console.log('gBoard', gBoard)
+
     renderBoard(gBoard)
+}
+
+function toggleRules(elRulesBtn) {
+    gGame.isRulesOn = !gGame.isRulesOn
+    const currDisplay = (gGame.isRulesOn) ? 'block' : 'none'
+    const currText = (gGame.isRulesOn) ? 'Hide' : 'Show'
+    document.querySelector('.rules').style.display = currDisplay
+    elRulesBtn.querySelector('span').innerText = currText
 }

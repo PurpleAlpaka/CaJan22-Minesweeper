@@ -16,22 +16,17 @@
         <div class="title">
             <h1>Minesweeper</h1>
         </div>
-        <div class="time-display">
+        <div class="live-time-display">
             Game Time: <span class="time"></span>
         </div>
-        <div class="lives">
-            <span class="life-1"></span>
-            <span class="life-2"></span>
-            <span class="life-3"></span>
+        <div class="live-mines-display">
+            Mines To Find: <span class="mines"></span>
         </div>
-        <div class="hints">
-            <span class="hint-1" onclick="useHint(this)"></span>
-            <span class="hint-2" onclick="useHint(this)"></span>
-            <span class="hint-3" onclick="useHint(this)"></span>
-        </div>
+        <div class="show-rules" onclick="toggleRules(this)"><span>Show</span> Rules</div>
         <div class="safe-click" onclick="showSafeClick(this)">Safe Clicks Left: <span></span></div>
         <div class="undo" onclick="undo()">Undo<span></span></div>
         <div class="mines-left">You have <span></span> mines left to place</div>
+        <div class="start-game" onclick="startManualMode()">Start Game</div>
         <div class="lvl-select">
             <span>Choose a level: </span>
             <div class="radios">
@@ -52,7 +47,16 @@
                 </div>
             </div>
         </div>
-        <button class="start-game" onclick="startManualMode()">Start Game On Manual Mode</button>
+    </div>
+    <div class="lives">
+        <span class="life-1"></span>
+        <span class="life-2"></span>
+        <span class="life-3"></span>
+    </div>
+    <div class="hints">
+        <span class="hint-1" onclick="useHint(this)"></span>
+        <span class="hint-2" onclick="useHint(this)"></span>
+        <span class="hint-3" onclick="useHint(this)"></span>
     </div>
     <div class="smiley" onclick="initGame()"></div>
     <table class="board-container">
@@ -75,13 +79,44 @@
             Hard: <span></span>
         </div>
     </div>
-    <div class="modal">
-        <span class="game-over">Game Over...</span>
-        <span class="win-text-display">You <span class="win-text"></span></span>
+    <div class="modal game-over">
+        Game Over...
+        <span class="text-display">You <span class="game-over-text"></span></span>
         <div class="final-time">
             Your Final Game Time is: <span></span>
         </div>
         <button class="restart" onclick="initGame()">Play Again</button>
+    </div>
+    <div class="modal rules">
+        <p>
+            The rules are as follows:
+            <br> IMPORTANT: Start the game with a left click
+            <br>
+            <br> Controls:
+            <br>Left Click: open a cell and show it's contents
+            <br>Right Click: Mark a cell with a flag
+            <br>R: Restart
+            <br>Escape: Close Modals
+            <br>
+            <br>The goal of the game is to uncover all the squares that do not contain mines, and mark all mines with a flag
+            <br>without being "blown up" by clicking on a square with a mine underneath.
+            <br>
+            <br>If you click on an empty cell, it will show how many mines are neighbouring that cell, if the number is 0 it will show an empty cell and expand it's neighbours.
+            <br>If you click on a cell containing a mine and have lives left (shown in the red hearts above the board), that cell will flash red, indicating you clicked on a mine, and your life count will reduce by one.
+            <br>When you use all 3 lives, you lose the game. There are certain helps and cheats available for you, if you so choose. the helps are:
+            <br>If you click one of the lit up lamps above the board, your next left click will become a hint click, showing a cell and it's immediate neighbours for a second, then hiding them again, without affecting lives.
+            <br>If you click on the Safe Clicks button, a random safe cell (a cell not containing a mine) will flash in green for a few seconds.
+            <br>If you click on the undo button, it will take the board state back one click, until the start of the game.
+            <br>Difficulties:
+            <br>You can only have one of these active at a time.
+            <br>Easy: A 4 by 4 board, with 2 mines
+            <br>Medium: A 8 by 8 board, with 12 mines
+            <br>Hard: A 12 by 12 board, with 30 mines
+            <br>Game modes:
+            <br>You can have only one of these active at a time, or none (A difficulty will always be active).
+            <br> Manual - Place your own mines (You have to place EXACTLY as much mines as the difficulty you are playing on requires).
+            <br> 7 BOOM - Mines will be placed on cells who are a multiplication of 7.
+        </p>
     </div>
     <script src="js/util.js"></script>
     <script src="js/board.js"></script>
