@@ -1,13 +1,12 @@
 'use strict'
 
 // TODO: Make page look good
-// TODO: make leaderboard dynamic and show all scores in order
-// TODO: Make a flickerClass() func and refactor accordingly
-// TODO: Make a changeDisplay func() and refactor accordingly
-// TODO: Reduce / Oragnize gGame and initilaztion
-// TODO: Show helps used in game over modal
-// TODO: HARDCORE MODE: No helps allowed, 1 life
+// TODO: HARDCORE MODE: No helps allowed, 1 life, hard board, 100 mines
 // TODO: Easter Egg
+// TODO: Make a changeDisplay func() and refactor accordingly
+// TODO: Make a flickerClass() func and refactor accordingly
+// TODO: Reduce / Oragnize gGame and initilaztion
+// TODO: make leaderboard dynamic and show all scores in order
 
 // Questions for CR:
 // How to store multipule values in the same localStorage key, IE an array or object,
@@ -41,6 +40,7 @@ var gGame = {
 
 function initGame() {
     initLeaderboard()
+    gGame.helpsUsed = { hints: 0, lives: 0, safeClicks: 0, undos: 0 }
     gGame.isOn = true
     gGame.isFirstClick = true
     gGame.shownCount = 0
@@ -65,6 +65,7 @@ function initGame() {
     if (!gGame.isManualMode) document.querySelector('.mines-left').style.display = 'none'
     document.querySelector('.game-over').style.display = 'none'
     document.querySelector('.rules').style.display = 'none'
+    document.querySelector('.easter').style.display = 'none'
     const elLives = document.querySelectorAll('.lives span')
     for (var i = 0; i < elLives.length; i++) {
         elLives[i].style.backgroundImage = 'url(assets/heart.png)'
@@ -108,10 +109,20 @@ function gameOver(isWin) {
         winText = 'won!'
         currSmiley = HAPPY_SMILEY
         setCurrHighScore(gGame.secsPassed, gGame.currLvl.id)
+        checkIfEaster()
     }
     document.querySelector('.smiley').innerText = currSmiley
     document.querySelector('.game-over-text').innerText = winText
     document.querySelector('.game-over').style.display = 'block'
+    populateHelpsUsed()
+}
+
+function populateHelpsUsed() {
+    const elHelps = document.querySelector('.game-over .helps-used')
+    elHelps.querySelector('.hintsU span').innerText = gGame.helpsUsed.hints
+    elHelps.querySelector('.livesU span').innerText = gGame.helpsUsed.lives
+    elHelps.querySelector('.safe-clicksU span').innerText = gGame.helpsUsed.safeClicks
+    elHelps.querySelector('.undosU span').innerText = gGame.helpsUsed.undos
 }
 
 function handleKey(ev) {
@@ -161,13 +172,15 @@ function changeLvl(lvlIdx) {
 }
 
 function removeLife() {
-    document.querySelector(`.life-${gGame.remainingLives}`).style.backgroundImage = ('url(assets/deadHeart.png)')
+    gGame.helpsUsed.lives++
+        document.querySelector(`.life-${gGame.remainingLives}`).style.backgroundImage = ('url(assets/deadHeart.png)')
     return --gGame.remainingLives
 }
 
 function useHint(elHint) {
     if (gGame.isHintClick) return
-    elHint.target.onclick = ''
+    gGame.helpsUsed.hints++
+        elHint.target.onclick = ''
     elHint.target.style.backgroundImage = 'url(assets/hintOff.png)'
     gGame.isHintClick = true
 }
@@ -190,7 +203,8 @@ function initLeaderboard() {
 
 function showSafeClick(elBtn) {
     if (gGame.safeClicksLeft <= 0) return
-    gGame.safeClicksLeft--
+    gGame.helpsUsed.safeClicks++
+        gGame.safeClicksLeft--
         elBtn.querySelector('span').innerText = gGame.safeClicksLeft
     var safeClicks = []
     for (var i = 0; i < gBoard.length; i++) {
@@ -206,7 +220,8 @@ function showSafeClick(elBtn) {
 
 function undo() {
     if (gGame.undoStates.boards.length === 0) return
-    gBoard = gGame.undoStates.boards.pop()
+    gGame.helpsUsed.undos++
+        gBoard = gGame.undoStates.boards.pop()
     gGame.remainingLives = gGame.undoStates.lives.pop()
     document.querySelector(`.life-${gGame.remainingLives}`).style.backgroundImage = 'url(assets/heart.png)'
     console.log('gBoard', gBoard)
@@ -222,16 +237,18 @@ function toggleRules(elRulesBtn) {
     elRulesBtn.querySelector('span').innerText = currText
 }
 
-function flickerClass() {
-
+function checkIfEaster() {
+    if (!gGame.helpsUsed.lives &&
+        !gGame.helpsUsed.hints &&
+        !gGame.helpsUsed.safeClicks &&
+        !gGame.helpsUsed.undos) showEasterEgg()
 }
 
-function flickerClass(el, className) {
-    el.classList.remove('unmarked')
-    const classToAddAfter = (className === 'marked-wrong') ? 'unmarked' : 'marked'
-    el.classList.add(className)
-    setTimeout(function() {
-        el.classList.remove(className)
-        el.classList.add(classToAddAfter)
-    }, 700)
+function showEasterEgg() {
+    document.querySelector('.easter').style.display = 'block'
+}
+
+function clearLeaderboard() {
+    localStorage.clear()
+    initLeaderboard()
 }

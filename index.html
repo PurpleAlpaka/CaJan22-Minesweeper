@@ -78,14 +78,21 @@
         <div class="hard">
             Hard: <span></span>
         </div>
+        <button onclick="clearLeaderboard()">Reset Leaderboard</button>
     </div>
     <div class="modal game-over">
-        Game Over...
+        <button class="restart" onclick="initGame()">Play Again</button> Game Over...
         <span class="text-display">You <span class="game-over-text"></span></span>
+        <div class="helps-used">
+            <span>You used these helps during your game:</span>
+            <div class="hintsU">Hints: <span></span></div>
+            <div class="livesU">Lives: <span></span></div>
+            <div class="safe-clicksU">Safe Clicks: <span></span></div>
+            <div class="undosU">Undos: <span></span></div>
+        </div>
         <div class="final-time">
             Your Final Game Time is: <span></span>
         </div>
-        <button class="restart" onclick="initGame()">Play Again</button>
     </div>
     <div class="modal rules">
         <p>
@@ -116,6 +123,10 @@
             <br> Manual - Place your own mines (You have to place EXACTLY as much mines as the difficulty you are playing on requires).
             <br> 7 BOOM - Mines will be placed on cells who are a multiplication of 7.
         </p>
+    </div>
+    <div class="modal easter">
+        <span>Congratutlations! You managed to beat the game without using any help! Take this pun as reward, I hope you cherish it</span>
+        <div class="pun"></div>
     </div>
     <script src="js/util.js"></script>
     <script src="js/board.js"></script>
