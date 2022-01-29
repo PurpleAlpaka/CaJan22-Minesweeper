@@ -1,7 +1,5 @@
 'use strict'
 
-// TODO: Add close buttons to modals, and close rules with escape
-// TODO: Undo should undo lives and hints used aswell as the board state
 // TODO: Make page look good
 // TODO: make leaderboard dynamic and show all scores in order
 // TODO: Make a flickerClass() func and refactor accordingly
@@ -10,6 +8,10 @@
 // TODO: Show helps used in game over modal
 // TODO: HARDCORE MODE: No helps allowed, 1 life
 // TODO: Easter Egg
+
+// Questions for CR:
+// How to store multipule values in the same localStorage key, IE an array or object,
+// then showcase it on the screen (localStorage stores as a string)
 
 const LEVELS = [{ id: 'easy', size: 4, mines: 2 }, { id: 'medium', size: 8, mines: 12 }, { id: 'hard', size: 12, mines: 30 }]
 const DEAFULT_SMILEY = '🐴'
@@ -38,6 +40,7 @@ var gGame = {
 }
 
 function initGame() {
+    initLeaderboard()
     gGame.isOn = true
     gGame.isFirstClick = true
     gGame.shownCount = 0
@@ -50,7 +53,7 @@ function initGame() {
     gGame.remainingLives = 3
     gGame.isHintClick = false
     gGame.safeClicksLeft = 3
-    gGame.undoStates = []
+    gGame.undoStates = { boards: [], lives: [] }
     gGame.manualMinesLeft = gGame.currLvl.mines
     gGame.shownHintCells = []
     clearIntervals(gGame.intervals)
@@ -104,7 +107,7 @@ function gameOver(isWin) {
     } else {
         winText = 'won!'
         currSmiley = HAPPY_SMILEY
-        setHighScores(gGame.secsPassed, gGame.currLvl.id)
+        setCurrHighScore(gGame.secsPassed, gGame.currLvl.id)
     }
     document.querySelector('.smiley').innerText = currSmiley
     document.querySelector('.game-over-text').innerText = winText
@@ -169,19 +172,21 @@ function useHint(elHint) {
     gGame.isHintClick = true
 }
 
-function setHighScores(secsPassed, diff) {
+function setCurrHighScore(secsPassed, diff) {
     if (secsPassed < localStorage.getItem(diff) || !localStorage.getItem(diff)) localStorage[diff] = secsPassed
     document.querySelector(`.leaderboard .${diff} span`).innerText = localStorage[diff]
-        // Unfinished!   
-        // gBestScores[diff].push(secsPassed)
-        // gBestScores[diff].sort()
-        // localStorage[diff] = gBestScores[diff].join(',')
-        // document.querySelector(`.leaderboard .${diff}`).innerText = localStorage[diff]
+
 }
-// Unfinished!
-// function showLeader(diff) {
-//     document.querySelector(`.leaderboard .${diff}`).style.display = 'block'
-// }
+
+function initLeaderboard() {
+    const easyScore = localStorage.easy ? localStorage.easy : 0
+    const mediumScore = localStorage.medium ? localStorage.medium : 0
+    const hardScore = localStorage.hard ? localStorage.hard : 0
+    const elLeaderboard = document.querySelector('.leaderboard')
+    elLeaderboard.querySelector('.easy span').innerText = easyScore
+    elLeaderboard.querySelector('.medium span').innerText = mediumScore
+    elLeaderboard.querySelector('.hard span').innerText = hardScore
+}
 
 function showSafeClick(elBtn) {
     if (gGame.safeClicksLeft <= 0) return
@@ -200,8 +205,10 @@ function showSafeClick(elBtn) {
 }
 
 function undo() {
-    if (gGame.undoStates.length === 0) return
-    gBoard = gGame.undoStates.pop()
+    if (gGame.undoStates.boards.length === 0) return
+    gBoard = gGame.undoStates.boards.pop()
+    gGame.remainingLives = gGame.undoStates.lives.pop()
+    document.querySelector(`.life-${gGame.remainingLives}`).style.backgroundImage = 'url(assets/heart.png)'
     console.log('gBoard', gBoard)
 
     renderBoard(gBoard)
@@ -213,4 +220,18 @@ function toggleRules(elRulesBtn) {
     const currText = (gGame.isRulesOn) ? 'Hide' : 'Show'
     document.querySelector('.rules').style.display = currDisplay
     elRulesBtn.querySelector('span').innerText = currText
+}
+
+function flickerClass() {
+
+}
+
+function flickerClass(el, className) {
+    el.classList.remove('unmarked')
+    const classToAddAfter = (className === 'marked-wrong') ? 'unmarked' : 'marked'
+    el.classList.add(className)
+    setTimeout(function() {
+        el.classList.remove(className)
+        el.classList.add(classToAddAfter)
+    }, 700)
 }

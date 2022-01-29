@@ -46,7 +46,8 @@ function cellClicked(elCell) {
         if (!gGame.isManualMode) addRandMines(gGame.currLvl.mines, pos)
         setMinesNegsCount(gBoard)
     }
-    gGame.undoStates.push(JSON.parse(JSON.stringify(gBoard)))
+    gGame.undoStates.boards.push(JSON.parse(JSON.stringify(gBoard)))
+    gGame.undoStates.lives.push(gGame.remainingLives)
     if (gGame.isHintClick) {
         setTimeout(hideCells, 1000, gBoard, pos)
         gBoard[pos.i][pos.j].isShown = true
@@ -89,13 +90,13 @@ function showCell(elCell, pos) {
                 var newColor = 'red'
             case 6:
             case 7:
-                var newColor = rgb(143, 10, 10)
+                var newColor = 'rgb(143, 10, 10)'
                 break
             case 8:
-                var newColor = rgb(65, 5, 5)
+                var newColor = 'rgb(65, 5, 5)'
                 break
             default:
-                var newColor = '#043a3d'
+                var newColor = 'rgb(8, 131, 138)'
                 break
         }
         elCell.style.color = newColor
