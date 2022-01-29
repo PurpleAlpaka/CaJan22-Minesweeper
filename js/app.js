@@ -64,11 +64,11 @@ function initGame() {
     document.querySelector('.rules').style.display = 'none'
     const elLives = document.querySelectorAll('.lives span')
     for (var i = 0; i < elLives.length; i++) {
-        elLives[i].style.backgroundImage = 'url("../assets/heart.png")'
+        elLives[i].style.backgroundImage = 'url(assets/heart.png)'
     }
     const elHints = document.querySelectorAll('.hints span')
     for (var i = 0; i < elHints.length; i++) {
-        elHints[i].style.backgroundImage = 'url("../assets/hint.png")'
+        elHints[i].style.backgroundImage = 'url(assets/hint.png)'
         elHints[i].addEventListener('click', useHint, 'this.target')
     }
     gBoard = buildBoard(gGame.currLvl.size)
@@ -158,14 +158,14 @@ function changeLvl(lvlIdx) {
 }
 
 function removeLife() {
-    document.querySelector(`.life-${gGame.remainingLives}`).style.backgroundImage = ('url("../assets/deadHeart.png")')
+    document.querySelector(`.life-${gGame.remainingLives}`).style.backgroundImage = ('url(assets/deadHeart.png)')
     return --gGame.remainingLives
 }
 
 function useHint(elHint) {
     if (gGame.isHintClick) return
     elHint.target.onclick = ''
-    elHint.target.style.backgroundImage = 'url("../assets/hintOff.png")'
+    elHint.target.style.backgroundImage = 'url(assets/hintOff.png)'
     gGame.isHintClick = true
 }
 

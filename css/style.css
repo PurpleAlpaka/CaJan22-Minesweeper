@@ -9,7 +9,7 @@ html {
 }
 
 body {
-    background-image: url('../assets/background1.jpg');
+    background-image: url('assets/background1.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     margin: 0;
@@ -97,11 +97,11 @@ input {
 }
 
 .marked {
-    background: no-repeat center center / 25% url('../assets/flag.png'), #058e95d7;
+    background: no-repeat center center / 25% url('assets/flag.png'), #058e95d7;
 }
 
 .mine {
-    background: no-repeat center / 50% url('../assets/mine.png'), red;
+    background: no-repeat center / 50% url('assets/mine.png'), red;
 }
 
 .modal {
